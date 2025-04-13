@@ -107,8 +107,8 @@ export default function TransactionForm({ onTransactionAdded }: TransactionFormP
                     <label className="block text-sm font-medium text-gray-700">Amount</label>
                     <input
                         type="number"
-                        value={formData.amount / 100}
-                        onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) * 100 })}
+                        value={formData.amount}
+                        onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) })}
                         className="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white border"
                         required
                         min="0"
