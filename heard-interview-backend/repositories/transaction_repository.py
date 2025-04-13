@@ -66,7 +66,7 @@ class TransactionRepository:
             ''', (
                 transaction['title'],
                 transaction['description'],
-                int(transaction['amount']), #cast to int to avoid weird math
+                int(transaction['amount'] * 100), #cast to int to avoid weird math
                 transaction['fromAccount'],
                 transaction['toAccount'],
                 transaction['transactionDate']
@@ -89,7 +89,7 @@ class TransactionRepository:
                 WHERE title = ?
             ''', (
                 transaction['description'],
-                int(transaction['amount']), # cast to int to avoid weird math with floating 1000th decimal
+                int(transaction['amount']*100), # cast to int to avoid weird math with floating 1000th decimal
                 transaction['fromAccount'],
                 transaction['toAccount'],
                 transaction['transactionDate'],
