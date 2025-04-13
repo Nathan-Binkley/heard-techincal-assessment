@@ -128,7 +128,7 @@ def get_account(account_name):
 '''
     Reset the data -- Useful for testing + restarting for examples
 '''
-@app.route('/api/reset', methods=['POST', 'OPTIONS'])
+@app.route('/api/reset', methods=['DELETE', 'OPTIONS'])
 def reset_data():
     if flask.request.method == 'OPTIONS':
         return '', 204

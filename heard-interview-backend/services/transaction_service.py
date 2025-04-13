@@ -75,6 +75,10 @@ class TransactionService:
         if not isinstance(transaction['amount'], (int, float)) or transaction['amount'] < 0:
             raise ValueError("Amount must be a positive number")
         
+        # Check if accounts are different -- that's illogical
+        if transaction['fromAccount'] == transaction['toAccount']:
+            raise ValueError("From and to accounts cannot be the same")
+        
         # Check if transaction with same title (ID) exists
         existing_transaction = self.repository.get_transaction(transaction['title'])
         if existing_transaction:
@@ -98,6 +102,10 @@ class TransactionService:
         if not isinstance(transaction['amount'], (int, float)) or transaction['amount'] < 0:
             raise ValueError("Amount must be a positive number")
         
+        # Check if accounts are different -- that's illogical
+        if transaction['fromAccount'] == transaction['toAccount']:
+            raise ValueError("From and to accounts cannot be the same")
+        
         return self.repository.update_transaction(title, transaction)
 
     '''
@@ -117,7 +125,7 @@ class TransactionService:
         created_transactions = []
         for transaction in transactions:
             try:
-                # Check if fromAccount exists, create if not
+                # Check if from_account exists, create if not
                 try:
                     self.account_service.get_account(transaction['fromAccount'])
                 except AccountNotFoundError:
@@ -126,7 +134,7 @@ class TransactionService:
                     })
                     
 
-                # Check if toAccount exists, create if not
+                # Check if to_account exists, create if not
                 try:
                     self.account_service.get_account(transaction['toAccount'])
                 except AccountNotFoundError:

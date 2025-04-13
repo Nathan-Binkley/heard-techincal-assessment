@@ -48,7 +48,10 @@ export default function TransactionForm({ onTransactionAdded }: TransactionFormP
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await transactionService.createTransaction(formData);
+            const response = await transactionService.createTransaction(formData);
+            if (!response.ok) {
+                throw new Error('Failed to create transaction');
+            }
             toast.success('Transaction created successfully!', {
                 duration: 3000,
                 position: 'bottom-right',

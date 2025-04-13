@@ -13,15 +13,18 @@ export const transactionService = {
         return response.json();
     },
 
-    async createTransaction(transaction: Omit<Transaction, 'id'>): Promise<Transaction> {
-        const response = await fetch(API_URL, {
+    async createTransaction(transaction: Omit<Transaction, 'id'>): Promise<Response> {
+        const response = await fetch(`${API_URL}/transactions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(transaction),
         });
-        return response.json();
+        if (!response.ok) {
+            throw new Error('Failed to create transaction');
+        }
+        return response;
     },
 
     async updateTransaction(title: string, transaction: Partial<Transaction>): Promise<Transaction> {
@@ -32,6 +35,9 @@ export const transactionService = {
             },
             body: JSON.stringify(transaction),
         });
+        if (!response.ok) {
+            throw new Error('Failed to update transaction');
+        }
         return response.json();
     },
 
