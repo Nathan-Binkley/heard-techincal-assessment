@@ -61,7 +61,6 @@ export default function TransactionList() {
 
     return (
         <div className="space-y-4">
-            <h2 className="text-2xl font-bold">Transactions</h2>
             <div className="grid gap-4">
                 {transactions.map((transaction) => (
                     <div key={transaction.title} className="p-4 border rounded-lg shadow-sm">
