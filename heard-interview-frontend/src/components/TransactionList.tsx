@@ -57,11 +57,12 @@ export default function TransactionList() {
     };
 
     if (loading) return <div>Loading...</div>;
-    if (error) return <div className="text-red-500">{error}</div>;
+    if (error) return <div className="text-red-500 text-center justify-center">{error}</div>;
 
     return (
         <div className="space-y-4">
             <div className="grid gap-4">
+                <h2 className="text-2xl font-bold text-center justify-center">Transactions</h2>
                 {transactions.map((transaction) => (
                     <div key={transaction.title} className="p-4 border rounded-lg shadow-sm">
                         <div className="space-y-2">

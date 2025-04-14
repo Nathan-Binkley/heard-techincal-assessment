@@ -1,6 +1,7 @@
 from typing import List, Optional
 from repositories.transaction_repository import TransactionRepository
 from services.account_service import AccountService, AccountNotFoundError
+from datetime import datetime
 
 '''
     Custom exceptions for transaction service
@@ -51,13 +52,22 @@ class TransactionService:
         self.repository.reset_transactions()
 
     def get_all_transactions(self) -> List[dict]:
-        return self.repository.get_all_transactions()
+        transactions = self.repository.get_all_transactions()
+        # Convert timestamp back to ISO format string for frontend
+        for transaction in transactions:
+            if 'transactionDate' in transaction:
+                timestamp = transaction['transactionDate']
+                transaction['transactionDate'] = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d')
+        return transactions
     
     '''
         Get a transaction by title (which is the ID)
     '''
     def get_transaction(self, title: str) -> Optional[dict]:
-        return self.repository.get_transaction(title)
+        transaction = self.repository.get_transaction(title)
+        if transaction: 
+            transaction['transactionDate'] = datetime.fromtimestamp(transaction['transactionDate']).strftime('%Y-%m-%d')
+        return transaction
 
     '''
         Create a new transaction
@@ -67,6 +77,10 @@ class TransactionService:
         @raise DuplicateTransactionError: If the transaction already exists
     '''
     def create_transaction(self, transaction: dict) -> dict:
+        # Convert ISO format string to timestamp
+        if 'transactionDate' in transaction:
+            transaction['transactionDate'] = int(datetime.fromisoformat(transaction['transactionDate']).timestamp())
+        
         # Validate transaction data
         if not all(key in transaction for key in ['title', 'description', 'amount', 'fromAccount', 'toAccount', 'transactionDate']):
             raise ValueError("Missing required transaction fields")
@@ -94,8 +108,12 @@ class TransactionService:
         @raise ValueError: If the transaction data is invalid
     '''
     def update_transaction(self, title: str, transaction: dict) -> Optional[dict]:
+        # Convert ISO format string to timestamp
+        if 'transactionDate' in transaction:
+            transaction['transactionDate'] = int(datetime.fromisoformat(transaction['transactionDate']).timestamp())
+        
         # Ensure all required fields are present
-        if not all(key in transaction for key in ['description', 'amount', 'fromAccount', 'toAccount', 'transactionDate']):
+        if not all(key in transaction for key in ['title', 'description', 'amount', 'fromAccount', 'toAccount', 'transactionDate']):
             raise ValueError("Missing required transaction fields")
         
         # Make sure amount is positive
@@ -105,7 +123,6 @@ class TransactionService:
         # Check if accounts are different -- that's illogical
         if transaction['fromAccount'] == transaction['toAccount']:
             raise ValueError("From and to accounts cannot be the same")
-        
         return self.repository.update_transaction(title, transaction)
 
     '''
