@@ -14,7 +14,7 @@ export const transactionService = {
     },
 
     async createTransaction(transaction: Omit<Transaction, 'id'>): Promise<Response> {
-        const response = await fetch(`${API_URL}/transactions`, {
+        const response = await fetch(`${API_URL}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

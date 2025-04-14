@@ -65,7 +65,6 @@ class AccountService:
         @raise DuplicateAccountError: If the account already exists
     '''
     def create_account(self, account: dict) -> dict:
-        print("CREATING ACCOUNT", account)
         # Validate account data
         if not all(key in account for key in ['account_name']):
             raise ValueError("Missing required account fields")

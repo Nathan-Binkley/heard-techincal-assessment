@@ -65,7 +65,7 @@ export default function EditTransactionDialog({ transaction, onClose, onSave }: 
                         <input
                             type="number"
                             value={formData.amount / 100}
-                            onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) })}
+                            onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) * 100 })}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             required
                             min="0"
