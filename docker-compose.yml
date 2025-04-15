@@ -6,27 +6,13 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:8080/api
-    volumes:
-      - ./heard-interview-frontend:/app
-      - /app/node_modules
+      - NEXT_PUBLIC_API_URL=http://backend:8080
     depends_on:
       - backend
-    networks:
-      - app-network
 
   backend:
     build: ./heard-interview-backend
     ports:
       - "8080:8080"
-    environment:
-      - FLASK_ENV=development
     volumes:
-      - ./heard-interview-backend:/app
       - ./heard-interview-backend/data:/app/data
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge

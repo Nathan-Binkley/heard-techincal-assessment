@@ -1,23 +1,19 @@
-FROM python:3.12-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Create data directory for SQLite
-RUN mkdir -p /app/data
-
-# Copy requirements first to leverage Docker cache
+# Install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt gunicorn
 
-# Copy the rest of the application
+# Copy application
 COPY . .
 
-# Expose the port the app runs on
+# Create data directory
+RUN mkdir -p /app/data
+
+# Expose port
 EXPOSE 8080
 
-# Set environment variables
-ENV FLASK_APP=app.py
-ENV FLASK_ENV=development
-
-# Command to run the application
-CMD ["python", "app.py"] 
+# Run the application
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app:app"] 
